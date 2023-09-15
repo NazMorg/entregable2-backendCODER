@@ -65,6 +65,20 @@ class ProductManager {
         this.saveProducts(products);
     }
 
+    deleteProduct(id) {
+        let products = this.loadProducts();
+        const productIndex = products.findIndex((product) => product.id === id);
+
+        if (productIndex === -1) {
+            console.log("Producto no encontrado.");
+            return;
+        } else {
+            const newProducts = products.filter((product) => product.id !== id)
+            this.saveProducts(newProducts);
+            console.log(`Producto con ID: ${id} eliminado.`)
+        }
+    }
+
     loadProducts() {
         try {
             const data = fs.readFileSync(this.path, 'utf-8');
@@ -98,6 +112,10 @@ console.log("Producto por ID:", manager.getProductById(2));
 //updateProduct
 manager.updateProduct(2, "price", 4000);
 console.log("Producto por ID:", manager.getProductById(2));
+
+//deleteProduct
+manager.deleteProduct(1)
+console.log("Lista de productos:", manager.getProducts());
 
 //Validaciones:
 manager.addProduct("Producto 3", "Descripción del producto 3", 350, "imagen3.jpg", "P1", 25); // Validación de code repetido
